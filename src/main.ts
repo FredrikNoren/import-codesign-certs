@@ -10,8 +10,8 @@ async function run(): Promise<void> {
       throw new Error('Action requires macOS agent.')
     }
 
-    const keychain: string = core.getInput('keychain')
     const createKeychain: boolean = core.getInput('create-keychain') === 'true'
+    const keychainName: string = core.getInput('keychain-name')
     let keychainPassword: string = core.getInput('keychain-password')
     let p12Filepath: string = core.getInput('p12-filepath')
     const p12FileBase64: string = core.getInput('p12-file-base64')
@@ -39,7 +39,7 @@ async function run(): Promise<void> {
     core.setSecret(keychainPassword)
 
     await security.installCertIntoTemporaryKeychain(
-      keychain,
+      keychainName,
       createKeychain,
       keychainPassword,
       p12Filepath,
