@@ -4,8 +4,9 @@ import * as fs from 'fs'
 import * as tmp from 'tmp'
 import * as uuid from 'uuid'
 import * as security from './security'
+import * as actionState from './action-state'
 
-async function run(): Promise<void> {
+async function main(): Promise<void> {
   try {
     if (os.platform() !== 'darwin') {
       throw new Error('Action requires macOS agent.')
@@ -40,6 +41,8 @@ async function run(): Promise<void> {
       keychainPassword = Math.random().toString(36)
     }
 
+    actionState.setDeleteKeychain(createKeychain)
+
     core.setOutput('keychain-name', keychainName)
     core.setOutput('keychain-password', keychainPassword)
     core.setSecret(keychainPassword)
@@ -56,4 +59,18 @@ async function run(): Promise<void> {
   }
 }
 
-run()
+async function cleanup(): Promise<void> {
+  try {
+    if (actionState.DeleteKeychain) {
+      await security.deleteKeychain(actionState.KeychainName)
+    }
+  } catch (error) {
+    core.warning(error)
+  }
+}
+
+if (!actionState.IsPost) {
+  main()
+} else {
+  cleanup()
+}
