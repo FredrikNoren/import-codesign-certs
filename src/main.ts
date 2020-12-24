@@ -42,6 +42,7 @@ async function main(): Promise<void> {
     }
 
     actionState.setDeleteKeychain(createKeychain)
+    actionState.setKeychainName(keychainName)
 
     core.setOutput('keychain-name', keychainName)
     core.setOutput('keychain-password', keychainPassword)
