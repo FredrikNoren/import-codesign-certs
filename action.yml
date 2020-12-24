@@ -7,11 +7,10 @@ inputs:
     required: true
     default: 'true'
   keychain-name:
-    description: 'The name of the keychain to import into.'
-    required: true
-    default: 'signing_temp'
+    description: 'The name of the keychain to import into. Gets auto-generated if empty'
+    required: false
   keychain-password:
-    description: 'The password to use with the keychain. Gets auto-generated if keychain-name is "signing_temp".'
+    description: 'The password to use with the keychain. Gets auto-generated if keychain-name is empty.'
     required: false
   p12-filepath:
     description: 'The path to the PKCS12 file to import.'
@@ -23,6 +22,8 @@ inputs:
     description: 'The password used to import the PKCS12 file.'
     required: true
 outputs:
+  keychain-name:
+    description: 'The name of the temporary keychain.'
   keychain-password:
     description: 'The password for temporary keychain.'
   security-response:
