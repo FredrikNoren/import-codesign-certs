@@ -32,6 +32,7 @@ export async function installCertIntoTemporaryKeychain(
 
   const tempKeychain = `${keychain}.keychain`
   if (setupKeychain) {
+    await deleteKeychain(tempKeychain, options)
     await createKeychain(tempKeychain, keychainPassword, options)
   }
   await unlockKeychain(tempKeychain, keychainPassword, options)
